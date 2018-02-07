@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shine.hisip.patient.dao.PatientMapper" >
+  <resultMap id="BaseResultMap" type="com.shine.hisip.common.domain.PatientInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+    <result column="PATIENT_NAME" property="patientName" jdbcType="VARCHAR" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="DECIMAL" />
+    <result column="AGE" property="age" jdbcType="DECIMAL" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="TAG_CODE" property="tagCode" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="patientDto" type="com.shine.hisip.patient.dto.PatientDto" extends="BaseResultMap">
+    <result column="CARD_NAME" property="cardName" jdbcType="VARCHAR" />
+    <result column="TAG_NAME" property="tagName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, OPEN_ID, PATIENT_NAME, ID_CARD, SEX, AGE, PHONE, TAG_CODE, IS_DEFAULT, CREATE_TIME, 
+    UPDATE_TIME, CARD_TYPE, CARD_NO
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PATIENT_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getPatientsByUser" resultMap="patientDto" parameterType="com.shine.hisip.patient.dto.PatientDto">
+    select
+    p.ID, p.OPEN_ID, p.PATIENT_NAME, p.ID_CARD, p.SEX, p.AGE, p.PHONE, p.TAG_CODE, p.IS_DEFAULT, p.CREATE_TIME,
+    p.UPDATE_TIME, p.CARD_TYPE, p.CARD_NO,
+    d.DICT_NAME AS TAG_NAME
+    from PATIENT_INFO p
+    LEFT JOIN PUBLIC_DICT d on p.TAG_CODE=d.DICT_CODE
+    where p.OPEN_ID = #{openId,jdbcType=VARCHAR} AND d.DICT_TYPE='RTYPE'
+    ORDER BY p.CREATE_TIME desc
+  </select>
+
+  <select id="getCardByPatient" resultMap="patientDto" parameterType="com.shine.hisip.patient.dto.PatientDto">
+    select
+    p.ID, p.OPEN_ID, p.PATIENT_NAME, p.ID_CARD, p.SEX, p.AGE, p.PHONE, p.TAG_CODE, p.IS_DEFAULT, p.CREATE_TIME,
+    p.UPDATE_TIME, p.CARD_TYPE, p.CARD_NO
+    from PATIENT_INFO p
+    LEFT JOIN PUBLIC_DICT d on p.CARD_TYPE=d.DICT_CODE
+    where p.ID = #{id,jdbcType=VARCHAR} AND d.DICT_TYPE='CARD_TYPE'
+  </select>
+
+  <select id="getDefultPatient" resultMap="patientDto" parameterType="com.shine.hisip.patient.dto.PatientDto">
+    select
+    <include refid="Base_Column_List" />
+    from PATIENT_INFO
+    where 1=1 AND OPEN_ID = #{openId,jdbcType=VARCHAR} AND IS_DEFAULT = 1
+  </select>
+
+  <delete id="delete" parameterType="com.shine.hisip.patient.dto.PatientDto" >
+    delete from PATIENT_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.shine.hisip.patient.dto.PatientDto" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT sys_guid() FROM dual
+    </selectKey>
+    insert into PATIENT_INFO (ID, OPEN_ID, PATIENT_NAME, 
+      ID_CARD, SEX, AGE, PHONE, 
+      TAG_CODE, IS_DEFAULT, CREATE_TIME, 
+      UPDATE_TIME, CARD_TYPE, CARD_NO
+      )
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{sex,jdbcType=DECIMAL}, #{age,jdbcType=DECIMAL}, #{phone,jdbcType=VARCHAR}, 
+      #{tagCode,jdbcType=VARCHAR}, #{isDefault,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="add" parameterType="com.shine.hisip.patient.dto.PatientDto" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT sys_guid() FROM dual
+    </selectKey>
+    insert into PATIENT_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="openId != null" >
+        OPEN_ID,
+      </if>
+      <if test="patientName != null" >
+        PATIENT_NAME,
+      </if>
+      <if test="idCard != null" >
+        ID_CARD,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="age != null" >
+        AGE,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="tagCode != null" >
+        TAG_CODE,
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE,
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null" >
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="tagCode != null" >
+        #{tagCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="edit" parameterType="com.shine.hisip.patient.dto.PatientDto" >
+    update PATIENT_INFO
+    <set >
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null" >
+        PATIENT_NAME = #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="age != null" >
+        AGE = #{age,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="tagCode != null" >
+        TAG_CODE = #{tagCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT = #{isDefault,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

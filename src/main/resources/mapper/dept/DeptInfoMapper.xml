@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shine.hisip.dept.dao.DeptInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.shine.hisip.common.domain.DeptInfo" >
+    <id column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="DeptDto" type="com.shine.hisip.dept.dto.DeptDto" extends="BaseResultMap">
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DEPT_ID, PARENT_ID, NAME, CREATE_TIME, UPDATE_TIME, ADDRESS
+  </sql>
+
+  <select id="parentList" parameterType="com.shine.hisip.dept.dto.DeptDto" resultMap="DeptDto">
+    SELECT DEPT_ID, PARENT_ID, NAME,ADDRESS
+    FROM DEPT_INFO
+    WHERE PARENT_ID IS NULL
+    <if test="name != null and name != ''">
+      AND NAME LIKE '%'||#{name,jdbcType=VARCHAR}||'%'
+    </if>
+    ORDER BY CREATE_TIME DESC
+  </select>
+
+  <select id="childList" parameterType="com.shine.hisip.dept.dto.DeptDto" resultMap="DeptDto">
+    SELECT DEPT_ID, PARENT_ID, NAME,ADDRESS
+    FROM DEPT_INFO
+    WHERE 1=1 AND PARENT_ID IS NOT NULL
+    <if test="parentId != null and parentId != ''">
+      AND PARENT_ID = #{parentId,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name != ''">
+      AND NAME LIKE '%'||#{name,jdbcType=VARCHAR}||'%'
+    </if>
+    ORDER BY CREATE_TIME DESC
+  </select>
+</mapper>

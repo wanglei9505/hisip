@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shine.hisip.disease.dao.DiseaseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.shine.hisip.common.domain.DiseaseInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DISEASE_NAME" property="diseaseName" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="SORT_N0" property="sortN0" jdbcType="DECIMAL" />
+    <result column="DISEASE_CODE" property="diseaseCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="DiseaseDtp" type="com.shine.hisip.disease.dto.DiseaseDto">
+    <result column="DISEASE_NAME" property="diseaseName" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="SORT_N0" property="sortN0" jdbcType="DECIMAL" />
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DISEASE_NAME, TYPE, SORT_N0, DISEASE_CODE
+  </sql>
+
+  <select id="getByType" resultMap="DiseaseDtp" parameterType="com.shine.hisip.disease.dto.DiseaseDto" >
+    select
+    ID, DISEASE_NAME, TYPE, SORT_N0
+    from DISEASE_INFO
+    where TYPE = #{type,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from DISEASE_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from DISEASE_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.shine.hisip.common.domain.DiseaseInfo" >
+    insert into DISEASE_INFO (ID, DISEASE_NAME, TYPE, 
+      SORT_N0, DISEASE_CODE)
+    values (#{id,jdbcType=VARCHAR}, #{diseaseName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{sortN0,jdbcType=DECIMAL}, #{diseaseCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shine.hisip.common.domain.DiseaseInfo" >
+    insert into DISEASE_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="diseaseName != null" >
+        DISEASE_NAME,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="sortN0 != null" >
+        SORT_N0,
+      </if>
+      <if test="diseaseCode != null" >
+        DISEASE_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseName != null" >
+        #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sortN0 != null" >
+        #{sortN0,jdbcType=DECIMAL},
+      </if>
+      <if test="diseaseCode != null" >
+        #{diseaseCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shine.hisip.common.domain.DiseaseInfo" >
+    update DISEASE_INFO
+    <set >
+      <if test="diseaseName != null" >
+        DISEASE_NAME = #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="sortN0 != null" >
+        SORT_N0 = #{sortN0,jdbcType=DECIMAL},
+      </if>
+      <if test="diseaseCode != null" >
+        DISEASE_CODE = #{diseaseCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shine.hisip.common.domain.DiseaseInfo" >
+    update DISEASE_INFO
+    set DISEASE_NAME = #{diseaseName,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      SORT_N0 = #{sortN0,jdbcType=DECIMAL},
+      DISEASE_CODE = #{diseaseCode,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="com.shine.hisip.wechat.user.dao.WeChatUserMapper">
+    <resultMap id="BaseResult" type="com.shine.hisip.wechat.user.dto.WeChatUserInfo">
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+        <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" />
+        <result column="SEX" property="sex" jdbcType="DECIMAL" />
+        <result column="SUBSCRIBE" property="subscribe" jdbcType="DECIMAL" />
+        <result column="CITY" property="city" jdbcType="VARCHAR" />
+        <result column="COUNTRY" property="country" jdbcType="TIMESTAMP" />
+        <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+        <result column="LANGUAGE" property="language" jdbcType="DECIMAL" />
+        <result column="SUBSCRIBE_TIME" property="subscribeTime" jdbcType="VARCHAR" />
+        <result column="HEAD_IMG_URL" property="headImgUrl" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="UNION_ID" property="unionId" jdbcType="VARCHAR" />
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        ID, OPEN_ID, NICK_NAME, SEX, SUBSCRIBE, CITY, COUNTRY, PROVINCE, LANGUAGE, SUBSCRIBE_TIME, HEAD_IMG_URL,
+        REMARK, UNION_ID, GROUP_ID
+    </sql>
+    <select id="selectByOpenId" resultMap="BaseResult" parameterType="com.shine.hisip.wechat.user.dto.WeChatUserInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM USER_INFO
+        WHERE OPEN_ID = #{openId,jdbcType=VARCHAR}
+    </select>
+    <insert id="save" parameterType="com.shine.hisip.wechat.user.dto.WeChatUserInfo">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT sys_guid() FROM dual
+        </selectKey>
+        INSERT INTO USER_INFO
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="nickName != null">
+                NICK_NAME,
+            </if>
+            <if test="openId != null">
+                OPEN_ID,
+            </if>
+            <if test="sex != null">
+                SEX,
+            </if>
+            <if test="subscribe != null">
+                SUBSCRIBE,
+            </if>
+            <if test="city != null">
+                CITY,
+            </if>
+            <if test="country != null">
+                COUNTRY,
+            </if>
+            <if test="province != null">
+                PROVINCE,
+            </if>
+            <if test="language != null">
+                LANGUAGE,
+            </if>
+            <if test="subscribeTime != null">
+                SUBSCRIBE_TIME,
+            </if>
+            <if test="headImgUrl != null">
+                HEAD_IMG_URL,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="unionId != null">
+                UNION_ID,
+            </if>
+            <if test="groupId != null">
+                GROUP_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=DECIMAL},
+            </if>
+            <if test="subscribe != null">
+                #{subscribe,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=DECIMAL},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=TIMESTAMP},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="subscribeTime != null">
+                #{subscribeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="headImgUrl != null">
+                #{headImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                #{unionId,jdbcType=CHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=CLOB},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.shine.hisip.wechat.user.dto.WeChatUserInfo">
+        UPDATE USER_INFO
+        <set>
+            <if test="nickName != null">
+                NICK_NAME = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                SEX = #{sex,jdbcType=DECIMAL},
+            </if>
+            <if test="subscribe != null">
+                SUBSCRIBE = #{subscribe,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                CITY = #{city,jdbcType=DECIMAL},
+            </if>
+            <if test="country != null">
+                COUNTRY = #{country,jdbcType=TIMESTAMP},
+            </if>
+            <if test="province != null">
+                PROVINCE = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                LANGUAGE = #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="subscribeTime != null">
+                SUBSCRIBE_TIME = #{subscribeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="headImgUrl != null">
+                HEAD_IMG_URL = #{headImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                UNION_ID = #{unionId,jdbcType=CHAR},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId,jdbcType=CLOB},
+            </if>
+        </set>
+        where OPEN_ID = #{openId,jdbcType=VARCHAR}
+    </update>
+</mapper>

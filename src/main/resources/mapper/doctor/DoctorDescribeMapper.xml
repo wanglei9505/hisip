@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shine.hisip.doctor.dao.DoctorDescribeMapper" >
+  <resultMap id="BaseResultMap" type="com.shine.hisip.common.domain.DoctorDescribe" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DOCTOR_ID" property="doctorId" jdbcType="VARCHAR" />
+    <result column="GENIUS" property="genius" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="TOTAL" property="total" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.shine.hisip.common.domain.DoctorDescribe" extends="BaseResultMap" >
+    <result column="DESCRIBE" property="describe" jdbcType="CLOB" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DOCTOR_ID, GENIUS, CREATE_TIME, UPDATE_TIME, TOTAL
+  </sql>
+  <sql id="Blob_Column_List" >
+    DESCRIBE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from DOCTOR_DESCRIBE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from DOCTOR_DESCRIBE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.shine.hisip.common.domain.DoctorDescribe" >
+    insert into DOCTOR_DESCRIBE (ID, DOCTOR_ID, GENIUS, 
+      CREATE_TIME, UPDATE_TIME, TOTAL, 
+      DESCRIBE)
+    values (#{id,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{genius,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{total,jdbcType=DECIMAL}, 
+      #{describe,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shine.hisip.common.domain.DoctorDescribe" >
+    insert into DOCTOR_DESCRIBE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="doctorId != null" >
+        DOCTOR_ID,
+      </if>
+      <if test="genius != null" >
+        GENIUS,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="total != null" >
+        TOTAL,
+      </if>
+      <if test="describe != null" >
+        DESCRIBE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="genius != null" >
+        #{genius,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shine.hisip.common.domain.DoctorDescribe" >
+    update DOCTOR_DESCRIBE
+    <set >
+      <if test="doctorId != null" >
+        DOCTOR_ID = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="genius != null" >
+        GENIUS = #{genius,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="total != null" >
+        TOTAL = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="describe != null" >
+        DESCRIBE = #{describe,jdbcType=CLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.shine.hisip.common.domain.DoctorDescribe" >
+    update DOCTOR_DESCRIBE
+    set DOCTOR_ID = #{doctorId,jdbcType=VARCHAR},
+      GENIUS = #{genius,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      TOTAL = #{total,jdbcType=DECIMAL},
+      DESCRIBE = #{describe,jdbcType=CLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shine.hisip.common.domain.DoctorDescribe" >
+    update DOCTOR_DESCRIBE
+    set DOCTOR_ID = #{doctorId,jdbcType=VARCHAR},
+      GENIUS = #{genius,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      TOTAL = #{total,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

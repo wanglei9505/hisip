@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@192.168.20.6:1521/ORCL
+    username: HISIP
+    password: HISIP
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    name: test
+  freemarker:
+    cache: false
+    request-context-attribute: service
+  session:
+    store-type: none
+  devtools:
+    restart:
+      include:
+        mapper: /mapper-[\\w-\\.]+jar
+server:
+  port: 8080
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  # type-aliases-package: com.winter.model
+
+#pagehelper分页插件
+pagehelper:
+    helperDialect: oracle
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+logging:
+  file: logs/reservation.log
+
+com:
+  shine:
+    check_token: 123456
+    appid: wx3734d7aabcfd768b
+    appsecret: d4fc7c51abef5960c228333cea430648

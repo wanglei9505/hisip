@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shine.hisip.source.dao.SourceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.shine.hisip.common.domain.SourceInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
+    <result column="DOCTOR_ID" property="doctorId" jdbcType="VARCHAR" />
+    <result column="APPOINT_DATE" property="appointDate" jdbcType="TIMESTAMP" />
+    <result column="APPOINT_TIME" property="appointTime" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="APPOINT_NUM" property="appointNum" jdbcType="DECIMAL" />
+    <result column="CHARGE" property="charge" jdbcType="DECIMAL" />
+    <result column="APPOINT_TYPE" property="appointType" jdbcType="VARCHAR" />
+    <result column="BEGIN_TIME" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="AppointInfo" type="com.shine.hisip.source.dto.AppointInfo">
+    <result column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DOCTOR_ID" property="doctorId" jdbcType="VARCHAR" />
+    <result column="APPOINT_DATE" property="appointDate" jdbcType="TIMESTAMP" />
+    <result column="APPOINT_TIME" property="appointTime" jdbcType="VARCHAR" />
+    <result column="APPOINT_NUM" property="appointNum" jdbcType="DECIMAL" />
+    <result column="CHARGE" property="charge" jdbcType="DECIMAL" />
+    <result column="APPOINT_TYPE" property="appointType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DEPT_ID, DOCTOR_ID, APPOINT_DATE, APPOINT_TIME, APPOINT_NUM, CHARGE, APPOINT_TYPE, 
+    BEGIN_TIME, END_TIME,STATUS
+  </sql>
+
+  <select id="getAppInfo" resultMap="AppointInfo" parameterType="com.shine.hisip.doctor.dto.DoctorReq" >
+    select
+    ID,APPOINT_DATE, APPOINT_TIME, APPOINT_NUM, CHARGE, APPOINT_TYPE,DOCTOR_ID
+    from SOURCE_INFO
+    where 1=1 AND DOCTOR_ID = #{doctorId,jdbcType=VARCHAR}
+    <if test="startDate != null">
+      AND APPOINT_DATE <![CDATA[>=]]> #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      AND APPOINT_DATE <![CDATA[<=]]> #{endDate,jdbcType=DATE}
+    </if>
+    order by appoint_date desc
+  </select>
+
+  <select id="getAppInfoById" resultMap="AppointInfo" parameterType="java.lang.String" >
+    select 
+    ID,APPOINT_DATE, APPOINT_TIME, APPOINT_NUM, CHARGE, APPOINT_TYPE,DOCTOR_ID
+    from SOURCE_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SOURCE_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.shine.hisip.source.dto.AppointInfo" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT sys_guid() FROM dual
+    </selectKey>
+    insert into SOURCE_INFO (ID, DEPT_ID, DOCTOR_ID, 
+      APPOINT_DATE, APPOINT_TIME, APPOINT_NUM, 
+      CHARGE, APPOINT_TYPE, BEGIN_TIME, 
+      END_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, 
+      #{appointDate,jdbcType=TIMESTAMP}, #{appointTime,jdbcType=VARCHAR}, #{appointNum,jdbcType=DECIMAL}, 
+      #{charge,jdbcType=DECIMAL}, #{appointType,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="add" parameterType="com.shine.hisip.source.dto.AppointInfo" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+      SELECT sys_guid() FROM dual
+    </selectKey>
+    insert into SOURCE_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="deptId != null" >
+        DEPT_ID,
+      </if>
+      <if test="doctorId != null" >
+        DOCTOR_ID,
+      </if>
+      <if test="appointDate != null" >
+        APPOINT_DATE,
+      </if>
+      <if test="appointTime != null" >
+        APPOINT_TIME,
+      </if>
+      <if test="appointNum != null" >
+        APPOINT_NUM,
+      </if>
+      <if test="charge != null" >
+        CHARGE,
+      </if>
+      <if test="appointType != null" >
+        APPOINT_TYPE,
+      </if>
+      <if test="beginTime != null" >
+        BEGIN_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="appointDate != null" >
+        #{appointDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appointTime != null" >
+        #{appointTime,jdbcType=VARCHAR},
+      </if>
+      <if test="appointNum != null" >
+        #{appointNum,jdbcType=DECIMAL},
+      </if>
+      <if test="charge != null" >
+        #{charge,jdbcType=DECIMAL},
+      </if>
+      <if test="appointType != null" >
+        #{appointType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="edit" parameterType="com.shine.hisip.source.dto.AppointInfo" >
+    update SOURCE_INFO
+    <set >
+      <if test="deptId != null" >
+        DEPT_ID = #{deptId,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        DOCTOR_ID = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="appointDate != null" >
+        APPOINT_DATE = #{appointDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appointTime != null" >
+        APPOINT_TIME = #{appointTime,jdbcType=VARCHAR},
+      </if>
+      <if test="appointNum != null" >
+        APPOINT_NUM = #{appointNum,jdbcType=DECIMAL},
+      </if>
+      <if test="charge != null" >
+        CHARGE = #{charge,jdbcType=DECIMAL},
+      </if>
+      <if test="appointType != null" >
+        APPOINT_TYPE = #{appointType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="reserve" parameterType="java.lang.String" >
+    update SOURCE_INFO
+    set APPOINT_NUM = APPOINT_NUM - 1
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
