@@ -1,0 +1,619 @@
+drop table USER_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: USER_INFO                                             */
+/*==============================================================*/
+create table USER_INFO 
+(
+   ID                   VARCHAR(36)          not null,
+   OPEN_ID              VARCHAR(100),
+   NICK_NAME            VARCHAR(100),
+   SEX                  INTEGER,
+   SUBSCRIBE            INTEGER,
+   CITY                 VARCHAR(100),
+   COUNTRY              VARCHAR(100),
+   PROVINCE             VARCHAR(100),
+   LANGUAGE             VARCHAR(20),
+   SUBSCRIBE_TIME       TIMESTAMP,
+   HEAD_IMG_URL         VARCHAR(200),
+   REMARK               VARCHAR(200),
+   UNION_ID             VARCHAR(100),
+   GROUP_ID             INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   ISABLE               CHAR(1),
+   constraint PK_USER_INFO primary key (ID)
+);
+
+comment on table USER_INFO is
+'微信登陆用户信息';
+
+comment on column USER_INFO.ID is
+'唯一主键';
+
+comment on column USER_INFO.OPEN_ID is
+'用户关注公众号唯一标识';
+
+comment on column USER_INFO.NICK_NAME is
+'微信昵称';
+
+comment on column USER_INFO.SEX is
+'用户的性别，值为1时是男性，值为2时是女性，值为0时是未知';
+
+comment on column USER_INFO.SUBSCRIBE is
+'用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息。';
+
+comment on column USER_INFO.CITY is
+'用户所在城市';
+
+comment on column USER_INFO.COUNTRY is
+'用户所在国家';
+
+comment on column USER_INFO.PROVINCE is
+'用户所在省份';
+
+comment on column USER_INFO.LANGUAGE is
+'用户的语言，简体中文为zh_CN';
+
+comment on column USER_INFO.SUBSCRIBE_TIME is
+'用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间';
+
+comment on column USER_INFO.HEAD_IMG_URL is
+'用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。';
+
+comment on column USER_INFO.REMARK is
+'公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注';
+
+comment on column USER_INFO.UNION_ID is
+'只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段';
+
+comment on column USER_INFO.GROUP_ID is
+'用户所在的分组ID';
+
+comment on column USER_INFO.CREATE_TIME is
+'创建时间';
+
+comment on column USER_INFO.UPDATE_TIME is
+'更新时间';
+
+comment on column USER_INFO.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table PATIENT_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: PATIENT_INFO                                          */
+/*==============================================================*/
+create table PATIENT_INFO 
+(
+   ID                   VARCHAR(36)          not null,
+   USER_ID              VARCHAR(36),
+   OPEN_ID              VARCHAR(100),
+   PATIENT_NAME         VARCHAR(100),
+   ID_CARD              VARCHAR(18),
+   SEX                  INTEGER,
+   AGE                  INTEGER,
+   PHONE                VARCHAR(11),
+   TAG_CODE             VARCHAR(36),
+   CARD_TYPE            VARCHAR(36),
+   CARD_NO              VARCHAR(100),
+   IS_DEFAULT           INTEGER,
+   CREATE_TIME          TIMESTAMP,
+   UPDATE_TIME          TIMESTAMP,
+   ISABLE               CHAR(1),
+   constraint PK_PATIENT_INFO primary key (ID)
+);
+
+comment on table PATIENT_INFO is
+'就诊人信息';
+
+comment on column PATIENT_INFO.ID is
+'唯一主键';
+
+comment on column PATIENT_INFO.USER_ID is
+'微信用户ID';
+
+comment on column PATIENT_INFO.OPEN_ID is
+'用户的标识，对当前公众号唯一';
+
+comment on column PATIENT_INFO.PATIENT_NAME is
+'就诊人名字';
+
+comment on column PATIENT_INFO.ID_CARD is
+'身份证号码';
+
+comment on column PATIENT_INFO.SEX is
+'值为1时是男性，值为2时是女性，值为0时是未知';
+
+comment on column PATIENT_INFO.AGE is
+'就诊人年龄';
+
+comment on column PATIENT_INFO.PHONE is
+'电话号码';
+
+comment on column PATIENT_INFO.TAG_CODE is
+'标签code 对应基础字典';
+
+comment on column PATIENT_INFO.CARD_TYPE is
+'就诊卡类型  关联基础字典数据';
+
+comment on column PATIENT_INFO.CARD_NO is
+'就诊卡号';
+
+comment on column PATIENT_INFO.IS_DEFAULT is
+'默认就诊人  1默认  0为非默认';
+
+comment on column PATIENT_INFO.CREATE_TIME is
+'创建时间';
+
+comment on column PATIENT_INFO.UPDATE_TIME is
+'更新时间';
+
+comment on column PATIENT_INFO.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table DEPT_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: DEPT_INFO                                             */
+/*==============================================================*/
+create table DEPT_INFO 
+(
+   DEPT_ID              VARCHAR(36)          not null,
+   PARENT_ID            VARCHAR(36)          not null,
+   NAME                 VARCHAR(100),
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   ADDRESS              VARCHAR(200),
+   CREATE_USER_ID       VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_DEPT_INFO primary key (DEPT_ID)
+);
+
+comment on table DEPT_INFO is
+'科室信息';
+
+comment on column DEPT_INFO.DEPT_ID is
+'科室ID';
+
+comment on column DEPT_INFO.PARENT_ID is
+'上级部门ID';
+
+comment on column DEPT_INFO.NAME is
+'科室名称';
+
+comment on column DEPT_INFO.CREATE_TIME is
+'创建时间';
+
+comment on column DEPT_INFO.UPDATE_TIME is
+'更新时间';
+
+comment on column DEPT_INFO.ADDRESS is
+'科室部门地址';
+
+comment on column DEPT_INFO.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table PAY_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: PAY_INFO                                              */
+/*==============================================================*/
+create table PAY_INFO 
+(
+   ID                   LONG                 not null,
+   ORDER_ID             LONG,
+   PAY_TYPE             VARCHAR(36),
+   CHARGE               NUMBER(12,2),
+   PAY_TIME             TIMESTAMP(6),
+   REFUN_TIME           TIMESTAMP(6),
+   APPLY_TIME           TIMESTAMP(6),
+   STATUS               VARCHAR(36),
+   constraint PK_PAY_INFO primary key (ID)
+);
+
+comment on table PAY_INFO is
+'缴费（退费）记录信息';
+
+comment on column PAY_INFO.ID is
+'唯一主键';
+
+comment on column PAY_INFO.ORDER_ID is
+'预约单ID';
+
+comment on column PAY_INFO.PAY_TYPE is
+'支付类型';
+
+comment on column PAY_INFO.CHARGE is
+'费用';
+
+comment on column PAY_INFO.PAY_TIME is
+'支付时间';
+
+comment on column PAY_INFO.REFUN_TIME is
+'退款时间';
+
+comment on column PAY_INFO.APPLY_TIME is
+'申请时间';
+
+
+drop table ORDER_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: ORDER_INFO                                            */
+/*==============================================================*/
+create table ORDER_INFO 
+(
+   ID                   VARCHAR(36)          not null,
+   PATIENT_ID           VARCHAR(36),
+   PATIENT_NAME         VARCHAR(100),
+   CARD_NO              VARCHAR(100),
+   DOCTOR_ID            VARCHAR(36),
+   DOCTOR_NAME          VARCHAR(100),
+   ORDER_DATE           DATE,
+   ORDER_TIME           VARCHAR(36),
+   CHARGE               NUMBER(12,2),
+   STATUS               VARCHAR(36),
+   ORDER_TYPE           VARCHAR(36),
+   SOURCE_ID            VARCHAR(100),
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   DEPT_ID              VARCHAR(36),
+   DEPT_NAME            VARCHAR(100),
+   OPEN_ID              VARCHAR(36),
+   ADDRESS              VARCHAR(200),
+   constraint PK_ORDER_INFO primary key (ID)
+);
+
+comment on table ORDER_INFO is
+'就诊预约信息';
+
+comment on column ORDER_INFO.PATIENT_ID is
+'就诊人ID';
+
+comment on column ORDER_INFO.PATIENT_NAME is
+'就诊人姓名';
+
+comment on column ORDER_INFO.CARD_NO is
+'就诊卡号';
+
+comment on column ORDER_INFO.DOCTOR_ID is
+'医生ID';
+
+comment on column ORDER_INFO.DOCTOR_NAME is
+'预约医生姓名';
+
+comment on column ORDER_INFO.ORDER_DATE is
+'预约时间（年月日）';
+
+comment on column ORDER_INFO.ORDER_TIME is
+'预约时间段，如上午、下午、晚上';
+
+comment on column ORDER_INFO.CHARGE is
+'费用';
+
+comment on column ORDER_INFO.STATUS is
+'预约单状态  关联基础字典数据';
+
+comment on column ORDER_INFO.ORDER_TYPE is
+'预约号类型  关联基础字典数据或视图数据';
+
+comment on column ORDER_INFO.SOURCE_ID is
+'号源ID';
+
+comment on column ORDER_INFO.CREATE_TIME is
+'创建时间';
+
+comment on column ORDER_INFO.UPDATE_TIME is
+'更新时间';
+
+comment on column ORDER_INFO.DEPT_ID is
+'预约科室ID';
+
+comment on column ORDER_INFO.DEPT_NAME is
+'预约科室名称';
+
+comment on column ORDER_INFO.OPEN_ID is
+'微信用户ID';
+
+comment on column ORDER_INFO.ADDRESS is
+'科室地址';
+
+
+drop table DOCTOR_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: DOCTOR_INFO                                           */
+/*==============================================================*/
+create table DOCTOR_INFO 
+(
+   DOCT_ID              VARCHAR(36)          not null,
+   DEPT_ID              VARCHAR(36),
+   NAME                 VARCHAR(100),
+   SEX                  INT,
+   IMAGE                VARCHAR(200),
+   TITLE                VARCHAR(100),
+   GRADE                VARCHAR(100),
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   CREATE_USER_ID       VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_DOCTOR_INFO primary key (DOCT_ID)
+);
+
+comment on table DOCTOR_INFO is
+'医生信息';
+
+comment on column DOCTOR_INFO.DOCT_ID is
+'医生ID';
+
+comment on column DOCTOR_INFO.DEPT_ID is
+'科室ID';
+
+comment on column DOCTOR_INFO.NAME is
+'擅长';
+
+comment on column DOCTOR_INFO.TITLE is
+'简介';
+
+comment on column DOCTOR_INFO.CREATE_TIME is
+'创建时间';
+
+comment on column DOCTOR_INFO.UPDATE_TIME is
+'更新时间';
+
+comment on column DOCTOR_INFO.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table DOCTOR_DESCRIBE cascade constraints;
+
+/*==============================================================*/
+/* Table: DOCTOR_DESCRIBE                                       */
+/*==============================================================*/
+create table DOCTOR_DESCRIBE 
+(
+   ID                   VARCHAR(36)          not null,
+   DOCTOR_ID            VARCHAR(36),
+   GENIUS               VARCHAR(300),
+   DESCRIBE             CLOB,
+   TOTAL                INTEGER,
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   CREATE_USER_ID       VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_DOCTOR_DESCRIBE primary key (ID)
+);
+
+comment on table DOCTOR_DESCRIBE is
+'医生介绍信息';
+
+comment on column DOCTOR_DESCRIBE.ID is
+'唯一ID';
+
+comment on column DOCTOR_DESCRIBE.DOCTOR_ID is
+'医生ID';
+
+comment on column DOCTOR_DESCRIBE.GENIUS is
+'擅长';
+
+comment on column DOCTOR_DESCRIBE.DESCRIBE is
+'简介';
+
+comment on column DOCTOR_DESCRIBE.TOTAL is
+'预约总数 每次预约成功+1';
+
+comment on column DOCTOR_DESCRIBE.CREATE_TIME is
+'创建时间';
+
+comment on column DOCTOR_DESCRIBE.UPDATE_TIME is
+'更新时间';
+
+comment on column DOCTOR_DESCRIBE.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table DISEASE_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: DISEASE_INFO                                          */
+/*==============================================================*/
+create table DISEASE_INFO 
+(
+   ID                   VARCHAR(36)          not null,
+   DISEASE_NAME         VARCHAR(100),
+   TYPE                 VARCHAR(12),
+   SORT_N0              NUMBER(4),
+   DISEASE_CODE         VARCHAR(100),
+   CREATE_USER_ID       VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_DISEASE_INFO primary key (ID)
+);
+
+comment on table DISEASE_INFO is
+'病症信息';
+
+comment on column DISEASE_INFO.DISEASE_NAME is
+'疾病名称';
+
+comment on column DISEASE_INFO.TYPE is
+'类型  男、女、儿童';
+
+comment on column DISEASE_INFO.SORT_N0 is
+'排序号';
+
+comment on column DISEASE_INFO.DISEASE_CODE is
+'疾病编码';
+
+comment on column DISEASE_INFO.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table DISEASE_DOCTOR cascade constraints;
+
+/*==============================================================*/
+/* Table: DISEASE_DOCTOR                                        */
+/*==============================================================*/
+create table DISEASE_DOCTOR 
+(
+   ID                   VARCHAR(36)          not null,
+   DOCTOR_ID            VARCHAR(36),
+   DISEASE_ID           VARCHAR(36),
+   UPDATE_TIME          TIMESTAMP(6),
+   CREATE_USER_ID2      VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   CREATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_DISEASE_DOCTOR primary key (ID)
+);
+
+comment on table DISEASE_DOCTOR is
+'病症医生关联表';
+
+comment on column DISEASE_DOCTOR.DOCTOR_ID is
+'关联医生ID';
+
+comment on column DISEASE_DOCTOR.DISEASE_ID is
+'关联疾病ID';
+
+comment on column DISEASE_DOCTOR.ISABLE is
+'0禁用,1在用,2删除';
+
+
+drop table SOURCE_INFO cascade constraints;
+
+/*==============================================================*/
+/* Table: SOURCE_INFO                                           */
+/*==============================================================*/
+create table SOURCE_INFO 
+(
+   ID                   VARCHAR(36)          not null,
+   DEPT_ID              VARCHAR(36),
+   DOCTOR_ID            VARCHAR(36),
+   APPOINT_DATE         DATE,
+   APPOINT_TIME         VARCHAR(36),
+   APPOINT_NUM          NUMBER,
+   CHARGE               NUMBER(12,2),
+   APPOINT_TYPE         VARCHAR(36),
+   BEGIN_TIME           DATE,
+   END_TIME             DATE,
+   STATUS               INTEGER,
+   constraint PK_SOURCE_INFO primary key (ID)
+);
+
+comment on table SOURCE_INFO is
+'号源信息';
+
+comment on column SOURCE_INFO.ID is
+'唯一主键';
+
+comment on column SOURCE_INFO.DEPT_ID is
+'科室ID';
+
+comment on column SOURCE_INFO.DOCTOR_ID is
+'医生ID';
+
+comment on column SOURCE_INFO.APPOINT_DATE is
+'预约时间 如2018-01-22';
+
+comment on column SOURCE_INFO.APPOINT_TIME is
+'预约时段(上午、下午、晚上)';
+
+comment on column SOURCE_INFO.APPOINT_NUM is
+'总数';
+
+comment on column SOURCE_INFO.CHARGE is
+'费用';
+
+comment on column SOURCE_INFO.APPOINT_TYPE is
+'预约类型';
+
+comment on column SOURCE_INFO.BEGIN_TIME is
+'开始时间，如上午开始时间08:00:00';
+
+comment on column SOURCE_INFO.END_TIME is
+'结束时间，如上午结束时间12:00:00';
+
+comment on column SOURCE_INFO.STATUS is
+'状态信息  0 正常 1 停诊';
+
+
+drop table DEPT_DESCRIBE cascade constraints;
+
+/*==============================================================*/
+/* Table: DEPT_DESCRIBE                                         */
+/*==============================================================*/
+create table DEPT_DESCRIBE 
+(
+   ID                   VARCHAR(36)          not null,
+   DEPT_ID              VARCHAR(36),
+   DESCRIBE             CLOB,
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   constraint PK_DEPT_DESCRIBE primary key (ID)
+);
+
+comment on table DEPT_DESCRIBE is
+'科室介绍信息';
+
+comment on column DEPT_DESCRIBE.ID is
+'唯一ID';
+
+comment on column DEPT_DESCRIBE.DEPT_ID is
+'科室ID';
+
+comment on column DEPT_DESCRIBE.DESCRIBE is
+'简介';
+
+comment on column DEPT_DESCRIBE.CREATE_TIME is
+'创建时间';
+
+comment on column DEPT_DESCRIBE.UPDATE_TIME is
+'更新时间';
+
+
+drop table PUBLIC_DICT cascade constraints;
+
+/*==============================================================*/
+/* Table: PUBLIC_DICT                                           */
+/*==============================================================*/
+create table PUBLIC_DICT 
+(
+   ID                   VARCHAR(36)          not null,
+   DICT_NAME            VARCHAR(36),
+   DICT_CODE            VARCHAR(36),
+   DICT_COMMENT         VARCHAR(100),
+   SORT_NO              NUMBER(4),
+   CREATE_TIME          TIMESTAMP(6),
+   UPDATE_TIME          TIMESTAMP(6),
+   CREATE_USER_ID       VARCHAR2(36),
+   UPDATE_USER_ID       VARCHAR2(36),
+   ISABLE               CHAR(1),
+   constraint PK_PUBLIC_DICT primary key (ID)
+);
+
+comment on table PUBLIC_DICT is
+'基础字典';
+
+comment on column PUBLIC_DICT.DICT_NAME is
+'字典名称';
+
+comment on column PUBLIC_DICT.DICT_CODE is
+'字典代码';
+
+comment on column PUBLIC_DICT.DICT_COMMENT is
+'字典说明';
+
+comment on column PUBLIC_DICT.SORT_NO is
+'排序号';
+
+comment on column PUBLIC_DICT.ISABLE is
+'0禁用,1在用,2删除';
+
